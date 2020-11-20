@@ -32,7 +32,7 @@ $ git submodule update --remote WatChMaL
 ```
 
 #### Pushing local changes to a submodule
-To push local changes to a submodule you can:
+To push local changes to a submodule you first need to add to stage the changes to the submodule in the main repo. You can then:
 
 1. Push local changes to the repo and check whether there are unpushed submodule changes using:
 
