@@ -13,6 +13,8 @@ To clone the repo with submodules included:
 $ git clone --recurse-submodules https://github.com/Whisky-Jack/WatChMaL_analysis.git
 ```
 
+FOR NOW JUST TREAT THE SUBMODULE AS ITS OWN REPO, AND CD TO THE SUBMODULE DIRECTORY TO PUSH/PULL CHANGES
+
 #### Fetching updates from remote
 
 To fetch remote update the submodules you can:
@@ -33,6 +35,7 @@ $ git submodule update --remote WatChMaL
 
 
 #### Pushing local changes to a submodule
+
 To push local changes to a submodule you first need to add to stage the changes to the submodule in the main repo. You can then:
 
 1. Push local changes to the repo and check whether there are unpushed submodule changes using:
