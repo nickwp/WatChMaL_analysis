@@ -31,6 +31,7 @@ $ git merge origin/master
 $ git submodule update --remote WatChMaL
 ```
 
+
 #### Pushing local changes to a submodule
 To push local changes to a submodule you first need to add to stage the changes to the submodule in the main repo. You can then:
 
