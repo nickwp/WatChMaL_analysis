@@ -832,7 +832,9 @@ def deprecated_event_hit_type(position, angle):
 
     return hit_types[sols_idxs][0]
 
-def plot_compare_dists(dists, dist_idxs_to_compare, dist_idxs_reference,
+def plot_compare_dists(dists, 
+                       numerator_dist_idxs, 
+                       denominator_dist_idxs,
                        labels, axes=None, colors=None, bins=20,
                        title=None, ratio_range=None, 
                        xlabel=None, xscale='linear',
@@ -842,9 +844,9 @@ def plot_compare_dists(dists, dist_idxs_to_compare, dist_idxs_reference,
     Plot distributions and plot their ratio.
     Args:
         dists                   ... list of 1d arrays
-        dist_idxs_to_compare    ... list of indices of distributions to use as numerator 
+        numerator_dist_idxs     ... list of indices of distributions to use as numerator 
                                     in the ratio plot
-        dist_idxs_reference     ... list of indices of distributions to use as denominator
+        denominator_dist_idxs   ... list of indices of distributions to use as denominator
                                     in the ratio plot
         labels                  ... list of labels for each distribution
         axes                    ... optional, list of two matplotlib.pyplot.axes on which 
@@ -899,10 +901,10 @@ def plot_compare_dists(dists, dist_idxs_to_compare, dist_idxs_reference,
     if title is not None: 
         ax.set_title(title)
     ax2 = axes[1]
-    for i, idx in enumerate(dist_idxs_to_compare):
+    for i, idx in enumerate(numerator_dist_idxs):
         lines = ax2.plot(plot_bins[:-1],     
-                 ns[idx] / ns[dist_idxs_reference[i]], 
-                 alpha=0.8,label='{} to {}'.format(labels[idx],labels[dist_idxs_reference[i]]),
+                 ns[idx] / ns[denominator_dist_idxs[i]], 
+                 alpha=0.8,label='{} to {}'.format(labels[idx],labels[denominator_dist_idxs[i]]),
                  )
         lines[0].set_color(patches[idx][0].get_edgecolor())
         lines[0].set_drawstyle('steps')

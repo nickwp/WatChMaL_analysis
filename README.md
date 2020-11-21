@@ -7,6 +7,8 @@ See for reference: https://git-scm.com/book/en/v2/Git-Tools-Submodules
 
 ### Key commands
 
+#### Cloning a repo with submodules
+
 To clone the repo with submodules included:
 
 ```
