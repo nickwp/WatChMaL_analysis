@@ -5,7 +5,7 @@
 #       extension: .py
 #       format_name: light
 #       format_version: '1.5'
-#       jupytext_version: 1.5.2
+#       jupytext_version: 1.6.0
 #   kernelspec:
 #     display_name: Python 3
 #     language: python
@@ -28,6 +28,120 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import matplotlib.colors as colors
 from seaborn import heatmap
+
+def plot_large_hists(dists, 
+                       numerator_dist_idxs, 
+                       denominator_dist_idxs,
+                       labels, axes=None, colors=None, 
+                       bins=20,
+                       title=None, ratio_range=None, 
+                       xlabel=None, 
+                       xscale='linear',
+                       xrange=None,
+                       linestyle=None, 
+                       normalized=True, verbose=False, loc='best'):
+    '''
+    Plot distributions and plot their ratio.
+    Args:
+        dists                   ... list of 1d arrays
+        numerator_dist_idxs     ... list of indices of distributions to use as numerator 
+                                    in the ratio plot
+        denominator_dist_idxs   ... list of indices of distributions to use as denominator
+                                    in the ratio plot
+        labels                  ... list of labels for each distribution
+        axes                    ... optional, list of two matplotlib.pyplot.axes on which 
+                                    to place the plots
+        colors                  ... list of colors to use for each distribution
+        bins                    ... number of bins to use in histogram
+        title                   ... plot title
+        ratio_range             ... range of distribution range to plot
+        xlabel                  ... x-axis label
+        linestyle               ... list of linestyles to use for each distribution
+    author: Calum Macdonald
+    June 2020
+    '''
+
+    """
+    ret = False
+    if axes is None:
+        fig, axes = plt.subplots(2,1,figsize=(12,12))
+        ret = True
+    axes = axes.flatten()
+    ax = axes[0]
+
+    if normalized:
+        hist_weights = [np.ones(len(dists[i]))*1/len(dists[i]) for i in range(len(dists))]
+    else:
+        hist_weights = None
+
+    __, plot_bins, __ = plt.hist(dists, 
+                                weights=hist_weights, 
+                                label=labels,
+                                histtype=u'step',
+                                bins=bins ,color=colors ,alpha=0.8)
+    
+    if (xscale == 'log'):
+        #print(plot_bins)
+        plot_bins = np.logspace(np.log10(plot_bins[0]), np.log10(plot_bins[-1]), bins + 1)
+        #print(plot_bins)
+    
+    # Plot main histogram
+    ns, plot_bins, patches = ax.hist(dists, 
+                            weights=hist_weights, 
+                            label=labels,
+                            histtype=u'step',
+                            bins=plot_bins , color=colors ,alpha=0.8)
+
+    if verbose:
+        print("Bins: ", plot_bins)
+    
+    if linestyle is not None:
+        for i,patch_list in enumerate(patches):
+            for patch in patch_list:
+                patch.set_linestyle(linestyle[i])
+    if xrange is not None: 
+        ax.set_xlim(xrange)
+
+    # Plot Ratio histogram
+    ax.legend(loc=loc)
+    if title is not None: 
+        ax.set_title(title)
+    ax2 = axes[1]
+    for i, idx in enumerate(numerator_dist_idxs):
+        print(len(plot_bins))
+        lines = ax2.plot(plot_bins[:-1],     
+                 ns[idx] / ns[denominator_dist_idxs[i]], 
+                 alpha=0.8,label='{} to {}'.format(labels[idx],labels[denominator_dist_idxs[i]]),
+                 )
+        lines[0].set_color(patches[idx][0].get_edgecolor())
+        lines[0].set_drawstyle('steps')
+    
+    if ratio_range is not None: 
+        ax2.set_ylim(ratio_range)
+    if xrange is not None: 
+        ax2.set_xlim(xrange)
+
+    ax2.legend()
+    ax2.set_title('Ratio of Distributions')
+    lines = ax2.plot(plot_bins[:-1],np.ones(len(plot_bins)-1),color='k',alpha=0.5)
+    lines[0].set_linestyle('-.')
+
+    ax.set_xscale(xscale)
+    ax2.set_xscale(xscale)
+
+    if xlabel is not None: 
+        ax.set_xlabel(xlabel)
+        ax2.set_xlabel(xlabel)
+    if ret: return fig
+    """ 
+
+
+
+
+
+
+
+
 
 def moving_average(a, n=3) :
     ret = np.cumsum(a, dtype=float)
@@ -835,9 +949,12 @@ def deprecated_event_hit_type(position, angle):
 def plot_compare_dists(dists, 
                        numerator_dist_idxs, 
                        denominator_dist_idxs,
-                       labels, axes=None, colors=None, bins=20,
+                       labels, axes=None, colors=None, 
+                       bins=20,
                        title=None, ratio_range=None, 
-                       xlabel=None, xscale='linear',
+                       xlabel=None, 
+                       xscale='linear',
+                       xrange=None,
                        linestyle=None, 
                        normalized=True, verbose=False, loc='best'):
     '''
@@ -883,12 +1000,13 @@ def plot_compare_dists(dists,
         plot_bins = np.logspace(np.log10(plot_bins[0]), np.log10(plot_bins[-1]), bins + 1)
         #print(plot_bins)
     
+    # Plot main histogram
     ns, plot_bins, patches = ax.hist(dists, 
                             weights=hist_weights, 
                             label=labels,
                             histtype=u'step',
                             bins=plot_bins , color=colors ,alpha=0.8)
-    
+
     if verbose:
         print("Bins: ", plot_bins)
     
@@ -896,12 +1014,16 @@ def plot_compare_dists(dists,
         for i,patch_list in enumerate(patches):
             for patch in patch_list:
                 patch.set_linestyle(linestyle[i])
-            
+    if xrange is not None: 
+        ax.set_xlim(xrange)
+
+    # Plot Ratio histogram
     ax.legend(loc=loc)
     if title is not None: 
         ax.set_title(title)
     ax2 = axes[1]
     for i, idx in enumerate(numerator_dist_idxs):
+        print(len(plot_bins))
         lines = ax2.plot(plot_bins[:-1],     
                  ns[idx] / ns[denominator_dist_idxs[i]], 
                  alpha=0.8,label='{} to {}'.format(labels[idx],labels[denominator_dist_idxs[i]]),
@@ -911,6 +1033,9 @@ def plot_compare_dists(dists,
     
     if ratio_range is not None: 
         ax2.set_ylim(ratio_range)
+    if xrange is not None: 
+        ax2.set_xlim(xrange)
+
     ax2.legend()
     ax2.set_title('Ratio of Distributions')
     lines = ax2.plot(plot_bins[:-1],np.ones(len(plot_bins)-1),color='k',alpha=0.5)
