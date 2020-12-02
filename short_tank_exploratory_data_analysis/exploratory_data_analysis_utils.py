@@ -99,22 +99,26 @@ def plot_compare_dists(dists,
     June 2020
     '''
     ret = False
+
+
+    __, plot_bins, __ = plt.hist(dists,
+                                label=labels,
+                                histtype=u'step',
+                                bins=bins ,color=colors ,alpha=0.8)
+    plt.close()    
+
     if axes is None:
         fig, axes = plt.subplots(2,1,figsize=(12,12))
         ret = True
     axes = axes.flatten()
+
+    # Create hist plot
     ax = axes[0]
 
     if normalized:
         hist_weights = [np.ones(len(dists[i]))*1/len(dists[i]) for i in range(len(dists))]
     else:
         hist_weights = None
-
-    __, plot_bins, __ = plt.hist(dists, 
-                                weights=hist_weights, 
-                                label=labels,
-                                histtype=u'step',
-                                bins=bins ,color=colors ,alpha=0.8)
     
     if (xscale == 'log'):
         #print(plot_bins)
@@ -143,11 +147,10 @@ def plot_compare_dists(dists,
 
     if title is not None: 
         ax.set_title(title)
-
+    
     # Plot Ratio histogram
     ax2 = axes[1]
     for i, idx in enumerate(numerator_dist_idxs):
-        print(len(plot_bins))
         lines = ax2.plot(plot_bins[:-1],     
                  ns[idx] / ns[denominator_dist_idxs[i]], 
                  alpha=0.8,label='{} to {}'.format(labels[idx],labels[denominator_dist_idxs[i]]),
@@ -173,6 +176,7 @@ def plot_compare_dists(dists,
         ax.set_xlabel(xlabel)
         ax2.set_xlabel(xlabel)
     if ret: return fig
+    
 
 def plot_computed_dists(dists, 
                        numerator_dist_idxs, denominator_dist_idxs,
