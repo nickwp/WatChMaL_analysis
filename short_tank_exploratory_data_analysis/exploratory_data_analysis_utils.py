@@ -74,10 +74,12 @@ def plot_compare_dists(dists,
                        bins=20,
                        title=None, ratio_range=None, 
                        xlabel=None, 
-                       xscale='linear',
+                       xscale='linear', yscale='linear',
                        xrange=None,
                        linestyle=None, 
-                       normalized=True, verbose=False, loc='best'):
+                       normalized=True,
+                       histtype=u'step',
+                       verbose=False, loc='best'):
     '''
     Plot distributions and plot their ratio.
     Args:
@@ -103,7 +105,7 @@ def plot_compare_dists(dists,
 
     __, plot_bins, __ = plt.hist(dists,
                                 label=labels,
-                                histtype=u'step',
+                                histtype=histtype,
                                 bins=bins ,color=colors ,alpha=0.8)
     plt.close()    
 
@@ -129,7 +131,7 @@ def plot_compare_dists(dists,
     ns, plot_bins, patches = ax.hist(dists, 
                             weights=hist_weights, 
                             label=labels,
-                            histtype=u'step',
+                            histtype=histtype,
                             bins=plot_bins , color=colors ,alpha=0.8)
 
     if verbose:
@@ -145,7 +147,9 @@ def plot_compare_dists(dists,
 
     ax.legend(loc=loc)
 
-    if title is not None: 
+    if title is not None:
+        if normalized:
+            title = title + ' (Normalized)'
         ax.set_title(title)
     
     # Plot Ratio histogram
@@ -170,11 +174,23 @@ def plot_compare_dists(dists,
     lines[0].set_linestyle('-.')
 
     ax.set_xscale(xscale)
-    ax2.set_xscale(xscale)
+    ax.set_yscale(yscale)   
+
+    ax2.set_xscale(xscale)  
 
     if xlabel is not None: 
         ax.set_xlabel(xlabel)
         ax2.set_xlabel(xlabel)
+    
+    ylabel = 'Count'
+
+    if yscale == 'log':
+        ylabel = ylabel + ' (log scale)'
+    if normalized:
+        ylabel = ylabel + ' (Normalized)'
+    
+    ax.set_ylabel(ylabel)
+
     if ret: return fig
     
 
@@ -184,8 +200,11 @@ def plot_computed_dists(dists,
                        bins=20,
                        title=None,
                        ratio_range=None, 
-                       xlabel=None, xrange=None, xscale='linear',
-                       normalized=True, loc='best', verbose=False):
+                       xlabel=None, xrange=None, 
+                       xscale='linear', yscale='linear',
+                       normalized=True,
+                       histtype=u'step',
+                       loc='best', verbose=False):
     '''
     Plot distributions and plot their ratio.
     Args:
@@ -217,16 +236,22 @@ def plot_computed_dists(dists,
         hist_weights = [np.ones(len(dists[i]))*1/len(dists[i]) for i in range(len(dists))]
     else:
         hist_weights = None
-    print("labels: ", labels)
+    
     # Plot main histogram
-    ns, plot_bins, patches = ax.hist(
-                                x=[bins[:-1] for i in range(len(dists))],
-                                bins=bins, 
-                                weights=[dists[i] for i in range(len(dists))],
-                                histtype=u'step', 
-                                label=labels, 
-                                color=colors,
-                                alpha=0.8)
+    ns = []
+    patches = []
+    for idx in range(len(dists)):
+        n_list, plot_bins, patche_list = ax.hist(
+                                    x=bins[idx][:-1],
+                                    bins=bins[idx], 
+                                    weights=dists[idx],
+                                    histtype=histtype, 
+                                    label=labels[idx], 
+                                    color=colors[idx],
+                                    alpha=0.8,
+                                    density=normalized)
+        ns.append(n_list)
+        patches.append(patche_list)
 
     if verbose:
         print("Bins: ", bins)
@@ -248,8 +273,7 @@ def plot_computed_dists(dists,
     
     ax2 = axes[1]
     for i, idx in enumerate(numerator_dist_idxs):
-        print(len(plot_bins))
-        lines = ax2.plot(plot_bins[:-1],     
+        lines = ax2.plot(bins[idx][:-1],     
                  ns[idx] / ns[denominator_dist_idxs[i]], 
                  alpha=0.8,label='{} to {}'.format(labels[idx],labels[denominator_dist_idxs[i]]),
                  )
@@ -268,11 +292,24 @@ def plot_computed_dists(dists,
     lines[0].set_linestyle('-.')
 
     ax.set_xscale(xscale)
+    ax.set_yscale(yscale)   
+
     ax2.set_xscale(xscale)
+
+
+    ylabel = 'Count'
+
+    if yscale == 'log':
+        ylabel = ylabel + ' (log scale)'
+    if normalized:
+        ylabel = ylabel + ' (Normalized)'
+
+    ax.set_ylabel(ylabel)
 
     if xlabel is not None: 
         ax.set_xlabel(xlabel)
         ax2.set_xlabel(xlabel)
+    
     """
     if ret: return fig
     """
