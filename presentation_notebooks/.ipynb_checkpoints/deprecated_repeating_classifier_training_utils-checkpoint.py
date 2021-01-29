@@ -457,8 +457,8 @@ def load_fq_output(mapping_indices_path, fq_failed_idxs_path, test_idxs_path, cu
     # Load the fiTQun results
 
     # File paths for fiTQun results
-    fiTQun_e_path     = "/fast_scratch/WatChMaL/data/IWCDmPMT_4pi_fulltank_fiTQun_e-.npz"
-    fiTQun_mu_path    = "/fast_scratch/WatChMaL/data/IWCDmPMT_4pi_fulltank_fiTQun_mu-.npz"
+    fiTQun_e_path = "/fast_scratch/WatChMaL/data/IWCDmPMT_4pi_fulltank_fiTQun_e-.npz"
+    fiTQun_mu_path = "/fast_scratch/WatChMaL/data/IWCDmPMT_4pi_fulltank_fiTQun_mu-.npz"
     fiTQun_gamma_path = "/fast_scratch/WatChMaL/data/IWCDmPMT_4pi_fulltank_fiTQun_gamma.npz"
 
     # Load fiTQun results
@@ -503,7 +503,7 @@ def load_fq_output(mapping_indices_path, fq_failed_idxs_path, test_idxs_path, cu
         except KeyError:
             i+=1
 
-    f = h5py.File("/fast_scratch/WatChMaL/data/IWCDmPMT_4pi_full_tank_pointnet.h5", "r")
+    f = h5py.File("/fast_scratch/WatChMaL/data/IWCDmPMT_4pi_fulltank_9M.h5", "r")
     original_labels = np.array(f['labels'])
     labels = np.array(original_labels[test_filtered_indices])
     f.close()

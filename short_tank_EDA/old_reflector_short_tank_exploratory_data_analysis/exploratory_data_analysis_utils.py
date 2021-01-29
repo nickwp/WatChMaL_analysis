@@ -106,11 +106,13 @@ def plot_compare_dists(dists,
     __, plot_bins, __ = plt.hist(dists,
                                 label=labels,
                                 histtype=histtype,
-                                bins=bins ,color=colors ,alpha=0.8)
+                                bins=bins,
+                                color=colors,
+                                alpha=0.8)
     plt.close()    
 
     if axes is None:
-        fig, axes = plt.subplots(2,1,figsize=(12,12))
+        fig, axes = plt.subplots(2,1,figsize=(12,12), facecolor='w')
         ret = True
     axes = axes.flatten()
 
@@ -132,7 +134,10 @@ def plot_compare_dists(dists,
                             weights=hist_weights, 
                             label=labels,
                             histtype=histtype,
-                            bins=plot_bins , color=colors ,alpha=0.8)
+                            bins=plot_bins, 
+                            color=colors, 
+                            alpha=0.8
+                            )
 
     if verbose:
         print("Bins: ", plot_bins)
