@@ -197,7 +197,7 @@ def plot_compare_dists(dists,
     ax.set_ylabel(ylabel)
 
     if ret: return fig
-    
+
 
 def plot_computed_dists(dists, 
                        numerator_dist_idxs, denominator_dist_idxs,
@@ -318,7 +318,7 @@ def plot_computed_dists(dists,
     """
     if ret: return fig
     """
-    
+
 
 def parametrized_ray_point(x,y,z,theta,phi,t):
     '''
