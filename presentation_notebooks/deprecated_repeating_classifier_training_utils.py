@@ -440,7 +440,7 @@ def plot_multiple_confusion_matrix(label_arrays, prediction_arrays, class_names,
     gs.tight_layout(fig)
     return fig
 
-def load_fq_output(mapping_indices_path, fq_failed_idxs_path, test_idxs_path, cut_path, cut_list):
+def deprecated_load_fq_output(mapping_indices_path, fq_failed_idxs_path, test_idxs_path, cut_path, cut_list):
     '''
     load_fq_output(mapping_indices_path, test_idxs, cut_path, cut_list)
     

@@ -1045,3 +1045,6 @@ def collapse_test_output(softmaxes, labels, index_dict,predictions=None,ignore_t
 
     if predictions is not None: return new_softmaxes, new_labels, new_predictions
     return new_softmaxes, new_labels
+
+def compute_momenta(total_energy, particle_mass):
+    return np.sqrt(total_energy**2 - particle_mass**2)
