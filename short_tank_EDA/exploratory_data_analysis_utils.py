@@ -386,7 +386,7 @@ def compute_d_wall(position):
 
     return min([dist_to_barrel, dist_to_endcap])
 
-def event_hit_type(position, angle):
+def compute_event_hit_type(position, angle):
     """
     distance_to_wall(position, angle)
     
